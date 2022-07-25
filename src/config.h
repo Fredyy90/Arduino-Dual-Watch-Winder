@@ -1,7 +1,7 @@
 #ifndef CONFIG_h
 #define CONFIG_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 const int PIN_W0_A1 = 2;
 const int PIN_W0_A2 = 3;
