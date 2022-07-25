@@ -3,6 +3,7 @@
 #include <Throttle.h>
 #include <Led.h>
 #include <TimeLib.h>
+#include <Winder.h>
 
 Led led(PIN_SWITCH_LED);
 
@@ -11,6 +12,9 @@ Throttle turboButtonW1(PIN_TURBO_BUTTON_W1, INPUT_PULLUP);
 
 Throttle modeSwitchW0(PIN_MODE_SWITCH_W0, INPUT_PULLUP);
 Throttle modeSwitchW1(PIN_MODE_SWITCH_W1, INPUT_PULLUP);
+
+Winder winder0(PIN_W0_A1, PIN_W0_A2, PIN_W0_B1, PIN_W0_B2);
+Winder winder1(PIN_W1_A1, PIN_W1_A2, PIN_W1_B1, PIN_W1_B2);
 
 uint32_t last_run = now();
 
@@ -33,23 +37,18 @@ void loop() {
   modeSwitchW1.update();
 
   // update winders
-  /*
-    TODO: update winders
-  */
+  winder0.update();
+  winder1.update();
 
   // add rotations if turbo-button pressed
   if (turboButtonW0.rose()) {
     led.blink(3);
-      /*
-        TODO: add `TURBO_BUTTON_ROTATIONS` rotations to Winder0
-      */
+    winder0.addRotations(TURBO_BUTTON_ROTATIONS);
   }
 
   if (turboButtonW1.rose()) {
     led.blink(3);
-      /*
-        TODO: add `TURBO_BUTTON_ROTATIONS` rotations to Winder1
-      */
+    winder1.addRotations(TURBO_BUTTON_ROTATIONS);
   }
 
   // timer reached to add new rotations
@@ -60,17 +59,12 @@ void loop() {
     bool modeW0State = modeSwitchW0.read();
     bool modeW1State = modeSwitchW1.read();
     if(modeW0State == false && modeW1State == false){
-      /*
-        TODO: add `ROTATIONS_PER_INTERVAL` rotations to both winders
-      */
+      winder0.addRotations(ROTATIONS_PER_INTERVAL);
+      winder1.addRotations(ROTATIONS_PER_INTERVAL);
     }else if (modeW0State == true){
-      /*
-        TODO: add `ROTATIONS_PER_INTERVAL` rotations to Winder0
-      */
-    }else if (modeW0State == true){
-      /*
-        TODO: add `ROTATIONS_PER_INTERVAL` rotations to Winder1
-      */
+      winder0.addRotations(ROTATIONS_PER_INTERVAL);
+    }else if (modeW1State == true){
+      winder1.addRotations(ROTATIONS_PER_INTERVAL);
     }
     
 
