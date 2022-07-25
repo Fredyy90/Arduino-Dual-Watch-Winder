@@ -3,10 +3,16 @@
 
 Winder::Winder(int pin1, int pin2, int pin3, int pin4){
     this->_stepper = AccelStepper(AccelStepper::FULL4WIRE, pin1, pin2, pin3, pin4);
+    this->_stepper.setMaxSpeed(1.0);
+    this->_stepper.setAcceleration(0.0);
 }
 
 void Winder::update(){
     this->_stepper.run();
+
+    if(this->_CWSteps == 0 && this->_CCWSteps == 0 && !this->_stepper.isRunning()){
+        this->_stepper.disableOutputs();
+    }
 }
 
 void Winder::addRotations(const int count){
