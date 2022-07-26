@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#define PERFORMANCE_OUTPUT 1 // add additional debug output about the loop performance every 25k runs
+
 const int PIN_W0_A1 = 2;
 const int PIN_W0_A2 = 3;
 const int PIN_W0_B1 = 4;

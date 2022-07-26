@@ -17,6 +17,13 @@ Winder winder0(PIN_W0_A1, PIN_W0_A2, PIN_W0_B1, PIN_W0_B2);
 Winder winder1(PIN_W1_A1, PIN_W1_A2, PIN_W1_B1, PIN_W1_B2);
 
 uint32_t last_run = now();
+uint32_t last_run_report = 0;
+
+#ifdef PERFORMANCE_OUTPUT
+uint32_t startTime  = millis();
+uint32_t runCounter = 0;
+const uint32_t outputSteps = 25000;
+#endif
 
 void updateEverything();
 
@@ -44,7 +51,8 @@ void loop() {
   }
 
   // timer reached to add new rotations
-  if((now() - last_run) > TIME_INTERVAL){ 
+  uint16_t time_offset = now() - last_run;
+  if(time_offset > TIME_INTERVAL){ 
     Serial.println("TIME_INTERVAL reached to add new rotations");
 
     last_run = now();
@@ -64,7 +72,31 @@ void loop() {
     }
     
 
+  }else{
+
+    if(time_offset % 10 == 0 && last_run_report != time_offset){
+      char buffer[100];
+      sprintf(buffer, "Time Offset = %ds, Waiting for TIME_INTERVAL = %ds to add ROTATIONS_PER_INTERVAL = %d new rotations. \n", time_offset, TIME_INTERVAL, ROTATIONS_PER_INTERVAL);
+      Serial.print(buffer);
+      last_run_report = time_offset;
+    }
+
   }
+
+  #ifdef PERFORMANCE_OUTPUT
+  runCounter++;
+  if(runCounter == outputSteps){
+    uint32_t elapsedTime = millis() - startTime; 
+    double avg = (double)elapsedTime / (double)outputSteps;
+
+    char buffer[100];
+    sprintf(buffer, "Performance Output: %d loop runs, elapsed %d ms total, average %s ms per loop", outputSteps, elapsedTime, String(avg, 5).c_str());
+    Serial.println(buffer);
+
+    startTime = millis();
+    runCounter = 0;
+  }
+  #endif
 
 }
 
