@@ -22,23 +22,22 @@ const int PIN_MODE_SWITCH_W1  = 13;
 const int PIN_SWITCH_LED      = 14;
 const int PIN_POWER_SWITCH    = 15;
 
-const int TURBO_BUTTON_ROTATIONS = 1;//200; // add 200 rotations everytime turbobutton is pressed
-
 /** 
  *  3600 / TIME_INTERVAL * 24 *  ROTATIONS_PER_INTERVAL = rotations per day
  * 
- * TIME_INTERVAL | ROTATIONS_PER_INTERVAL | rotations per day
- * 1 * 60        | 1                      | 1140
- * 10 * 60       | 10                     | 1140
- * 2 * 60        | 1                      | 720
- * 20 * 60       | 10                     | 720
- * 5 * 60        | 3                      | 864
- * 5 * 60        | 2                      | 576
+ *  TIME_INTERVAL | ROTATIONS_PER_INTERVAL | rotations per day
+ *  1  * 60       |  1                     | 1140
+ *  10 * 60       | 10                     | 1140
+ *  2  * 60       |  1                     |  720
+ *  20 * 60       | 10                     |  720
+ *  5  * 60       |  3                     |  864
+ *  5  * 60       |  2                     |  576
  * 
  */
 
 const int ROTATIONS_PER_INTERVAL = 3;                // add 3 rotations every interval
 const int TIME_INTERVAL          = 5*60;             // interval to add rotations in seconds, default value : 5*60 = 5 minutes
+const int TURBO_BUTTON_ROTATIONS = 200;              // add 200 rotations everytime turbobutton is pressed
 
 const u_int32_t STEPPER_STEPS_PER_ROTATION = 2048;  // steps needed for 1 rotation
 const u_int32_t STEPPER_MAX_STEPS_PER_SEC  = 600;   // max speed in steps per second
