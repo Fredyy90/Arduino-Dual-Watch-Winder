@@ -1,8 +1,18 @@
 #include <Arduino.h>
 #include <Winder.h>
 
-Winder::Winder(int pin1, int pin2, int pin3, int pin4){
+
+Winder::Winder(uint8_t step_pin, uint8_t direction_pin){
+    this->_stepper = AccelStepper(AccelStepper::DRIVER, step_pin, direction_pin);
+    this->_setStepperParameters();
+}
+
+Winder::Winder(uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4){
     this->_stepper = AccelStepper(AccelStepper::FULL4WIRE, pin1, pin2, pin3, pin4);
+    this->_setStepperParameters();
+}
+
+void Winder::_setStepperParameters(){
     this->_stepper.setMaxSpeed(this->_maxSpeed); 
     this->_stepper.setAcceleration(this->_acceleration);
 }
