@@ -75,9 +75,9 @@ void loop() {
   }else{
 
     if(time_offset % 10 == 0 && last_run_report != time_offset){
-      char buffer[100];
-      sprintf(buffer, "Time Offset = %ds, Waiting for TIME_INTERVAL = %ds to add ROTATIONS_PER_INTERVAL = %d new rotations. \n", time_offset, TIME_INTERVAL, ROTATIONS_PER_INTERVAL);
-      Serial.print(buffer);
+      char buffer[102];
+      sprintf(buffer, "Time Offset = %ds, Waiting for TIME_INTERVAL = %ds to add ROTATIONS_PER_INTERVAL = %d new rotations.", time_offset, TIME_INTERVAL, ROTATIONS_PER_INTERVAL);
+      Serial.println(buffer);
       last_run_report = time_offset;
     }
 
@@ -90,7 +90,7 @@ void loop() {
     double avg = (double)elapsedTime / (double)outputSteps;
 
     char buffer[100];
-    sprintf(buffer, "Performance Output: %d loop runs, elapsed %d ms total, average %s ms per loop", outputSteps, elapsedTime, String(avg, 5).c_str());
+    sprintf(buffer, "Performance Output: %ld loop runs, elapsed %ld ms total, average %s ms per loop", outputSteps, elapsedTime, String(avg, 5).c_str());
     Serial.println(buffer);
 
     startTime = millis();
