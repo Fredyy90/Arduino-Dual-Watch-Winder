@@ -13,6 +13,8 @@ Throttle turboButtonW1(PIN_TURBO_BUTTON_W1, INPUT_PULLUP);
 Throttle modeSwitchW0(PIN_MODE_SWITCH_W0, INPUT_PULLUP);
 Throttle modeSwitchW1(PIN_MODE_SWITCH_W1, INPUT_PULLUP);
 
+Throttle powerSwitch(PIN_POWER_SWITCH, INPUT_PULLUP);
+
 Winder winder0(PIN_W0_A1, PIN_W0_A2, PIN_W0_B1, PIN_W0_B2);
 Winder winder1(PIN_W1_A1, PIN_W1_A2, PIN_W1_B1, PIN_W1_B2);
 
@@ -50,38 +52,47 @@ void loop() {
     winder1.addRotations(TURBO_BUTTON_ROTATIONS);
   }
 
-  // timer reached to add new rotations
-  uint16_t time_offset = now() - last_run;
-  if(time_offset > TIME_INTERVAL){ 
-    Serial.println("TIME_INTERVAL reached to add new rotations");
+  if(powerSwitch.read() == true){ // Power-Button on
+    led.constant(false);
 
-    last_run = now();
+    // timer reached to add new rotations
+    uint16_t time_offset = now() - last_run;
+    if(time_offset > TIME_INTERVAL){ 
+      Serial.println("TIME_INTERVAL reached to add new rotations");
 
-    bool modeW0State = modeSwitchW0.read();
-    bool modeW1State = modeSwitchW1.read();
-    if(modeW0State == true && modeW1State == true){
-      Serial.println("Added rotations to both winders");
-      winder0.addRotations(ROTATIONS_PER_INTERVAL);
-      winder1.addRotations(ROTATIONS_PER_INTERVAL);
-    }else if (modeW0State == false){
-      Serial.println("Added rotations to winder0");
-      winder0.addRotations(ROTATIONS_PER_INTERVAL);
-    }else if (modeW1State == false){
-      Serial.println("Added rotations to winder1");
-      winder1.addRotations(ROTATIONS_PER_INTERVAL);
+      last_run = now();
+
+      bool modeW0State = modeSwitchW0.read();
+      bool modeW1State = modeSwitchW1.read();
+      if(modeW0State == true && modeW1State == true){
+        Serial.println("Added rotations to both winders");
+        winder0.addRotations(ROTATIONS_PER_INTERVAL);
+        winder1.addRotations(ROTATIONS_PER_INTERVAL);
+      }else if (modeW0State == false){
+        Serial.println("Added rotations to winder0");
+        winder0.addRotations(ROTATIONS_PER_INTERVAL);
+      }else if (modeW1State == false){
+        Serial.println("Added rotations to winder1");
+        winder1.addRotations(ROTATIONS_PER_INTERVAL);
+      }
+
+      led.blink(3);    
+
+    }else{
+
+      if(time_offset % 10 == 0 && last_run_report != time_offset){
+        char buffer[102];
+        sprintf(buffer, "Time Offset = %ds, Waiting for TIME_INTERVAL = %ds to add ROTATIONS_PER_INTERVAL = %d new rotations.", time_offset, TIME_INTERVAL, ROTATIONS_PER_INTERVAL);
+        Serial.println(buffer);
+        last_run_report = time_offset;
+      }
+
     }
-    
 
   }else{
-
-    if(time_offset % 10 == 0 && last_run_report != time_offset){
-      char buffer[102];
-      sprintf(buffer, "Time Offset = %ds, Waiting for TIME_INTERVAL = %ds to add ROTATIONS_PER_INTERVAL = %d new rotations.", time_offset, TIME_INTERVAL, ROTATIONS_PER_INTERVAL);
-      Serial.println(buffer);
-      last_run_report = time_offset;
-    }
-
+    led.constant(true);
   }
+
 
   #ifdef PERFORMANCE_OUTPUT
   runCounter++;
@@ -109,6 +120,7 @@ void updateEverything(){
   turboButtonW1.update();
   modeSwitchW0.update();
   modeSwitchW1.update();
+  powerSwitch.update();
 
   // update winders
   winder0.update();
