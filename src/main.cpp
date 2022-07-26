@@ -23,7 +23,6 @@ void updateEverything();
 // put your setup code here, to run once:
 void setup() {
   Serial.begin(111520);
-  delay(10000);
 }
 
 // put your main code here, to run repeatedly:
@@ -68,8 +67,6 @@ void loop() {
   }
 
 }
-
-
 
 void updateEverything(){
   // update LED to make it blink, when needed.
