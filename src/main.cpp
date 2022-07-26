@@ -42,28 +42,36 @@ void loop() {
 
   // add rotations if turbo-button pressed
   if (turboButtonW0.rose()) {
+    Serial.println("TurboButtonW0 triggered");
     led.blink(3);
     winder0.addRotations(TURBO_BUTTON_ROTATIONS);
   }
 
   if (turboButtonW1.rose()) {
+    Serial.println("TurboButtonW1 triggered");
     led.blink(3);
     winder1.addRotations(TURBO_BUTTON_ROTATIONS);
   }
 
   // timer reached to add new rotations
   if((now() - last_run) > TIME_INTERVAL){ 
+    Serial.println("TIME_INTERVAL reached to add new rotations");
 
     last_run = now();
 
     bool modeW0State = modeSwitchW0.read();
     bool modeW1State = modeSwitchW1.read();
-    if(modeW0State == false && modeW1State == false){
+    Serial.println(modeW0State);
+    Serial.println(modeW1State);
+    if(modeW0State == true && modeW1State == true){
+      Serial.println("Added rotations to both winders");
       winder0.addRotations(ROTATIONS_PER_INTERVAL);
       winder1.addRotations(ROTATIONS_PER_INTERVAL);
-    }else if (modeW0State == true){
+    }else if (modeW0State == false){
+      Serial.println("Added rotations to winder0");
       winder0.addRotations(ROTATIONS_PER_INTERVAL);
-    }else if (modeW1State == true){
+    }else if (modeW1State == false){
+      Serial.println("Added rotations to winder1");
       winder1.addRotations(ROTATIONS_PER_INTERVAL);
     }
     

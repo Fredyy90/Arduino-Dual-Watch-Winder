@@ -15,8 +15,8 @@ const int PIN_W1_B2 = 9;
 
 const int PIN_TURBO_BUTTON_W0 = 10;
 const int PIN_TURBO_BUTTON_W1 = 11;
-const int PIN_MODE_SWITCH_W0 = 12;
-const int PIN_MODE_SWITCH_W1 = 13;
+const int PIN_MODE_SWITCH_W0 = 13;
+const int PIN_MODE_SWITCH_W1 = 12;
 const int PIN_SWITCH_LED = 14;
 const int PIN_POWER_SWITCH = 15;
 
