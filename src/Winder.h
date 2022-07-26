@@ -2,6 +2,7 @@
 #define WINDER_h
 
 #include <Arduino.h>
+#include <Config.h>
 #include <AccelStepper.h>
 
 class Winder
@@ -21,9 +22,9 @@ class Winder
   private:
     void _setStepperParameters();
     AccelStepper _stepper;
-    const uint32_t _stepsPerRotation = 2048;        // steps needed for 1 rotation
-    const uint32_t _maxSpeed = 600;                 // max speed in steps per second
-    const uint32_t _acceleration = 2048;            // in steps*second²
+    const uint32_t _stepsPerRotation = STEPPER_STEPS_PER_ROTATION;
+    const uint32_t _maxSpeed = STEPPER_MAX_STEPS_PER_SEC;
+    const uint32_t _acceleration = STEPPER_ACCELERATION;
     uint32_t _CWRotations = 0;
     uint32_t _CCWRotations = 0;
     uint32_t _lastStep = 0;
