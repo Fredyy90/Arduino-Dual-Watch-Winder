@@ -15,6 +15,8 @@ Throttle modeSwitchW1(PIN_MODE_SWITCH_W1, INPUT_PULLUP);
 
 Throttle powerSwitch(PIN_POWER_SWITCH, INPUT_PULLUP);
 
+Throttle *buttons[] = {&turboButtonW0, &turboButtonW1, &modeSwitchW0, &modeSwitchW1, &powerSwitch};
+
 Winder winder0(PIN_W0_A1, PIN_W0_A2, PIN_W0_B1, PIN_W0_B2);
 Winder winder1(PIN_W1_A1, PIN_W1_A2, PIN_W1_B1, PIN_W1_B2);
 
@@ -116,11 +118,9 @@ void updateEverything(){
   led.update();
 
   // update Buttons/Switch
-  turboButtonW0.update(); 
-  turboButtonW1.update();
-  modeSwitchW0.update();
-  modeSwitchW1.update();
-  powerSwitch.update();
+  for (Throttle *button: buttons) {
+    button->update();
+  }
 
   // update winders
   winder0.update();
