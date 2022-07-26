@@ -4,12 +4,19 @@ Firmware for the Dual Gyro Watch Winder, using a Raspberry-Pi Pico and Plattform
 
 Still a work-in-progress, as I'm still waiting for the last hardware parts to arrive.
 
+## How to Install
+  
+ 1. setup VS Code and Platform.io [Get Started](https://platformio.org/platformio-ide)
+ 2. edit plattform.ini and /include/config.h
+ 3. compile and upload to your device
+ 4. ???
+ 5. Profit
+
 ## 3D Models
 
 Dual Gyro Watch Winder: [Paid Model on Cults3D]( https://cults3d.com/en/3d-model/gadget/dual-gyro-winder-watch-winder-remontoir-montre)
 
-Raspberry Pi Pico Holder: [Free on Thingiverse](https://www.thingiverse.com/thing:4808999/files)
-
+Raspberry Pi Pico Holder: [Free on Thingiverse (Case_Upper_No_Text.STL)](https://www.thingiverse.com/thing:4808999/files)
 
 ## Hardware used:
 
