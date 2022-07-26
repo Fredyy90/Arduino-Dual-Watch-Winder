@@ -19,8 +19,9 @@ class Winder
 
   private:
     AccelStepper _stepper;
-    const uint32_t _stepsPerRotation = 2048;
-    const uint32_t _stepsDelay = 2;
+    const uint32_t _stepsPerRotation = 2048;        // steps needed for 1 rotation
+    const uint32_t _maxSpeed = _stepsPerRotation/4; // max speed in steps per second
+    const uint32_t _acceleration = 128;             // in steps*second²
     uint32_t _CWSteps = 0;
     uint32_t _CCWSteps = 0;
     uint32_t _lastStep = 0;

@@ -3,8 +3,8 @@
 
 Winder::Winder(int pin1, int pin2, int pin3, int pin4){
     this->_stepper = AccelStepper(AccelStepper::FULL4WIRE, pin1, pin2, pin3, pin4);
-    this->_stepper.setMaxSpeed(1.0);
-    this->_stepper.setAcceleration(0.0);
+    this->_stepper.setMaxSpeed(this->_maxSpeed); 
+    this->_stepper.setAcceleration(this->_acceleration);
 }
 
 void Winder::update(){
@@ -12,6 +12,7 @@ void Winder::update(){
 
     if(this->_CWSteps == 0 && this->_CCWSteps == 0 && !this->_stepper.isRunning()){
         this->_stepper.disableOutputs();
+        this->_stepper.setCurrentPosition(0);
     }
 }
 
@@ -33,7 +34,7 @@ void Winder::addRotations(const int count, const int direction){
             this->_CCWSteps += this->_stepsPerRotation * count;
         }
     }else if (direction == Winder::RANDOM_SPLIT){
-        float factor = (random(256)/256);
+        float factor = ((float)random(256) / (float)256);
         const int CWSteps = count * factor;
         this->_CWSteps += this->_stepsPerRotation * CWSteps;   
         this->_CCWSteps += this->_stepsPerRotation * (count - CWSteps);
