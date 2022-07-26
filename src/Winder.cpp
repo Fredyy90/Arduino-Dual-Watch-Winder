@@ -10,9 +10,17 @@ Winder::Winder(int pin1, int pin2, int pin3, int pin4){
 void Winder::update(){
     this->_stepper.run();
 
-    if(this->_CWSteps == 0 && this->_CCWSteps == 0 && !this->_stepper.isRunning()){
-        this->_stepper.disableOutputs();
-        this->_stepper.setCurrentPosition(0);
+    if(!this->_stepper.isRunning()){
+        if(this->_CWRotations == 0 && this->_CCWRotations == 0){
+            this->_stepper.disableOutputs();
+            this->_stepper.setCurrentPosition(0);
+        }else if(this->_CWRotations > 0){      
+            this->_stepper.move(this->_stepsPerRotation * this->_CWRotations);  
+            this->_CWRotations = 0;          
+        }else if(this->_CCWRotations > 0){            
+            this->_stepper.move(-this->_stepsPerRotation * this->_CCWRotations);  
+            this->_CCWRotations = 0;          
+        }
     }
 }
 
@@ -23,21 +31,21 @@ void Winder::addRotations(const int count){
 void Winder::addRotations(const int count, const int direction){
 
     if(direction == Winder::FORWARD){
-        this->_CWSteps += this->_stepsPerRotation * count;
+        this->_CWRotations += count;
     }else if (direction == Winder::BACKWARD){
-        this->_CCWSteps += this->_stepsPerRotation * count;
+        this->_CCWRotations += count;
     }else if (direction == Winder::RANDOM){
         const int rand = random(256);
         if(rand <= 127){
-            this->_CWSteps += this->_stepsPerRotation * count;
+            this->_CWRotations += count;
         }else{            
-            this->_CCWSteps += this->_stepsPerRotation * count;
+            this->_CCWRotations += count;
         }
     }else if (direction == Winder::RANDOM_SPLIT){
         float factor = ((float)random(256) / (float)256);
         const int CWSteps = count * factor;
-        this->_CWSteps += this->_stepsPerRotation * CWSteps;   
-        this->_CCWSteps += this->_stepsPerRotation * (count - CWSteps);
+        this->_CWRotations += CWSteps;   
+        this->_CCWRotations += count - CWSteps;
     }
     
 
