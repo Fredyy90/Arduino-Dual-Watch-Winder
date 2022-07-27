@@ -18,6 +18,9 @@ Dual Gyro Watch Winder: [Paid Model on Cults3D]( https://cults3d.com/en/3d-model
 
 Raspberry Pi Pico Holder: [Free on Thingiverse (Case_Upper_No_Text.STL)](https://www.thingiverse.com/thing:4808999/files)
 
+## Wiring
+![wiring example from fritzing](wiring.png)
+
 ## Hardware used:
 
 1x [1kg Sunlu PLA Black Spool](https://s.click.aliexpress.com/e/_DC6NlZt)
