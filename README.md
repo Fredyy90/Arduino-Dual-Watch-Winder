@@ -2,7 +2,7 @@
 
 Firmware for the Dual Gyro Watch Winder, using a Raspberry-Pi Pico and Plattform.io/Arduino.
 
-Still a work-in-progress, as I'm still waiting for the last hardware parts to arrive.
+![nice flashy animation](media/animation.gif)
 
 ## How to Install
   
@@ -19,7 +19,8 @@ Dual Gyro Watch Winder: [Paid Model on Cults3D]( https://cults3d.com/en/3d-model
 Raspberry Pi Pico Holder: [Free on Thingiverse (Case_Upper_No_Text.STL)](https://www.thingiverse.com/thing:4808999/files)
 
 ## Wiring
-![wiring example from fritzing](wiring.png)
+![wiring example from fritzing](media/wiring.png)
+![picture of messy wiring](media/photo-internal1.jpg)![closeup of the mess](media/photo-internal-closeup1.jpg)
 
 ## Hardware used:
 
