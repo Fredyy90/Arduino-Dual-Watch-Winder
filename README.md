@@ -1,4 +1,4 @@
-# Raspberry-Pi-Pico-Dual-WatchWinder-Arduino
+# Arduino-Dual-Watch-Winder
 
 Firmware for the Dual Gyro Watch Winder, using a Raspberry-Pi Pico and Plattform.io/Arduino.
 
