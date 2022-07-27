@@ -2,12 +2,16 @@
 
 Firmware for the Dual Gyro Watch Winder, using a Raspberry-Pi Pico and Plattform.io/Arduino.
 
+Its compatible with any arduino compatible board that has enough digital I/O pins.
+
+The turbo-buttons are not available in the stock-model so the feature is configurable in config.h
+
 ![nice flashy animation](media/animation.gif)
 
 ## How to Install
   
  1. setup VS Code and Platform.io [Get Started](https://platformio.org/platformio-ide)
- 2. edit plattform.ini and /include/config.h
+ 2. edit plattform.ini to set your target and configure /include/config.h
  3. compile and upload to your device
  4. ???
  5. Profit
