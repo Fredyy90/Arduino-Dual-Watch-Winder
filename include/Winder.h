@@ -12,14 +12,14 @@ class Winder
     Winder(uint8_t step_pin, uint8_t direction_pin);
     void update();
     bool isRunning();
-    void stop();
-    void addRotations(int count);
-    void addRotations(int count, int direction);
+    bool stop();
+    void addRotations(u_int8_t count);
+    void addRotations(u_int8_t count, u_int8_t direction);
 
-    const int FORWARD = 1;
-    const int BACKWARD = 2;
-    const int RANDOM = 3;
-    const int RANDOM_SPLIT = 4;
+    const u_int8_t FORWARD = 1;
+    const u_int8_t BACKWARD = 2;
+    const u_int8_t RANDOM = 3;
+    const u_int8_t RANDOM_SPLIT = 4;
 
   private:
     void _setStepperParameters();

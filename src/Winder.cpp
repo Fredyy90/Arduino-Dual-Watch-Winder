@@ -38,22 +38,24 @@ bool Winder::isRunning(){
     return this->_stepper.isRunning();
 }
 
-void Winder::stop(){
+bool Winder::stop(){
 
     if(this->isRunning()){
         long distance = this->_stepper.distanceToGo();
         this->_stepper.move(distance % this->_stepsPerRotation);  // only finish current rotation
-        this->_CCWRotations = 0;  
-        this->_CWRotations = 0;        
+        this->_CCWRotations = 0;
+        this->_CWRotations = 0;
+        return true;
     }
+    return false;
 
 }
 
-void Winder::addRotations(const int count){
+void Winder::addRotations(const u_int8_t count){
     this->addRotations(count, Winder::RANDOM_SPLIT);
 }
 
-void Winder::addRotations(const int count, const int direction){
+void Winder::addRotations(const u_int8_t count, const u_int8_t direction){
 
     if(direction == Winder::FORWARD){
         this->_CWRotations += count;
