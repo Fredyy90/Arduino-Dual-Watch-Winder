@@ -11,6 +11,8 @@ class Winder
     Winder(uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4);
     Winder(uint8_t step_pin, uint8_t direction_pin);
     void update();
+    bool isRunning();
+    void stop();
     void addRotations(int count);
     void addRotations(int count, int direction);
 

@@ -45,13 +45,21 @@ void loop() {
   if (turboButtonW0.fell()) {
     Serial.println("TurboButtonW0 triggered");
     led.blink(3);
-    winder0.addRotations(TURBO_BUTTON_ROTATIONS);
+    if(winder0.isRunning()){
+      winder0.stop();
+    }else{
+      winder0.addRotations(TURBO_BUTTON_ROTATIONS);
+    }
   }
 
   if (turboButtonW1.fell()) {
     Serial.println("TurboButtonW1 triggered");
     led.blink(3);
-    winder1.addRotations(TURBO_BUTTON_ROTATIONS);
+    if(winder1.isRunning()){
+      winder1.stop();
+    }else{
+      winder1.addRotations(TURBO_BUTTON_ROTATIONS);
+    }
   }
 
   if(powerSwitch.read() == true){ // Power-Button on

@@ -20,7 +20,7 @@ void Winder::_setStepperParameters(){
 void Winder::update(){
     this->_stepper.run();
 
-    if(!this->_stepper.isRunning()){
+    if(!this->isRunning()){
         if(this->_CWRotations == 0 && this->_CCWRotations == 0){
             this->_stepper.disableOutputs();
             this->_stepper.setCurrentPosition(0);
@@ -32,6 +32,21 @@ void Winder::update(){
             this->_CCWRotations = 0;          
         }
     }
+}
+
+bool Winder::isRunning(){
+    return this->_stepper.isRunning();
+}
+
+void Winder::stop(){
+
+    if(this->isRunning()){
+        long distance = this->_stepper.distanceToGo();
+        this->_stepper.move(distance % this->_stepsPerRotation);  // only finish current rotation
+        this->_CCWRotations = 0;  
+        this->_CWRotations = 0;        
+    }
+
 }
 
 void Winder::addRotations(const int count){
