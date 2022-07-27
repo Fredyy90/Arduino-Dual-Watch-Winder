@@ -109,9 +109,10 @@ void loop() {
   if(runCounter == outputSteps){
     uint32_t elapsedTime = millis() - startTime; 
     double avg = (double)elapsedTime / (double)outputSteps;
+    double freq = (1000.0/ (double)elapsedTime) * (double)outputSteps;
 
     char buffer[100];
-    sprintf(buffer, "Performance Output: %ld loop runs, elapsed %ld ms total, average %s ms per loop", outputSteps, elapsedTime, String(avg, 5).c_str());
+    sprintf(buffer, "Performance Output: %ld loop runs, elapsed %ld ms total, average %s ms per loop, loop-freq: %shz", outputSteps, elapsedTime, String(avg, 5).c_str(), String(freq, 2).c_str());
     Serial.println(buffer);
 
     startTime = millis();
