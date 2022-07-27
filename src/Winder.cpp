@@ -24,12 +24,12 @@ void Winder::update(){
         if(this->_CWRotations == 0 && this->_CCWRotations == 0){
             this->_stepper.disableOutputs();
             this->_stepper.setCurrentPosition(0);
-        }else if(this->_CWRotations > 0){      
+        }else if(this->_CWRotations > 0){
             this->_stepper.move(this->_stepsPerRotation * this->_CWRotations);  
-            this->_CWRotations = 0;          
-        }else if(this->_CCWRotations > 0){            
+            this->_CWRotations = 0;
+        }else if(this->_CCWRotations > 0){
             this->_stepper.move(-this->_stepsPerRotation * this->_CCWRotations);  
-            this->_CCWRotations = 0;          
+            this->_CCWRotations = 0;
         }
     }
 }
@@ -65,7 +65,7 @@ void Winder::addRotations(const u_int8_t count, const u_int8_t direction){
         const int rand = random(256);
         if(rand <= 127){
             this->_CWRotations += count;
-        }else{            
+        }else{
             this->_CCWRotations += count;
         }
     }else if (direction == Winder::RANDOM_SPLIT){
@@ -74,6 +74,5 @@ void Winder::addRotations(const u_int8_t count, const u_int8_t direction){
         this->_CWRotations += CWSteps;   
         this->_CCWRotations += count - CWSteps;
     }
-    
 
 }

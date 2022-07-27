@@ -18,7 +18,7 @@ void Led::update()
     uint32_t currentTime = millis();
  	if ((currentTime - this->_lastBlink) >= this->_blinksOffset) {
  		this->_lastBlink = currentTime;
-        
+
         if(this->_blinks > 0 && this->_currentState == false){
             digitalWrite(this->_pin, HIGH);
             this->_currentState = true;
@@ -30,7 +30,7 @@ void Led::update()
                 this->_mode = Led::CONSTANT;
             }
         }
-        
+
     }
 }
 
@@ -45,5 +45,5 @@ void Led::constant(bool state){
 void Led::blink(int count)
 {
     this->_mode = Led::BLINK;
-    this->_blinks += count;  
+    this->_blinks += count;
 }
