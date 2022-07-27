@@ -1,17 +1,16 @@
 #include <Arduino.h>
 #include <Led.h>
 
-Led::Led(int pin)
-{
+Led::Led(int pin){
   pinMode(pin, OUTPUT);
   digitalWrite(this->_pin, LOW);
   this->_pin = pin;
   this->_lastBlink = millis();
 }
 
-void Led::update()
-{
-    if(this->_mode != Led::BLINK){
+void Led::update(){
+
+    if(this->_mode == Led::CONSTANT){
         return;
     }
 
@@ -19,31 +18,32 @@ void Led::update()
  	if ((currentTime - this->_lastBlink) >= this->_blinksOffset) {
  		this->_lastBlink = currentTime;
 
-        if(this->_blinks > 0 && this->_currentState == false){
-            digitalWrite(this->_pin, HIGH);
-            this->_currentState = true;
+        if(this->_blinks > 0 && this->_currentState == true){
             this->_blinks -= 1;
-        }else{
-            digitalWrite(this->_pin, LOW);
-            this->_currentState = false;
-            if(this->_blinks == 0){
+        }else if(this->_blinks == 0){
                 this->_mode = Led::CONSTANT;
-            }
         }
-
+        this->_toggle();
     }
+}
+
+void Led::_toggle(){
+    this->_toggle(!this->_currentState);
+}
+
+void Led::_toggle(bool state){
+    this->_currentState = state;
+    digitalWrite(this->_pin, this->_currentState);
 }
 
 void Led::constant(bool state){
     if(this->_blinks <= 0){
         this->_mode = Led::CONSTANT;
-        this->_currentState = state;
-        digitalWrite(this->_pin, state);
+        this->_toggle(state);
     }
 }
 
-void Led::blink(int count)
-{
+void Led::addBlinks(int count){
     this->_mode = Led::BLINK;
     this->_blinks += count;
 }

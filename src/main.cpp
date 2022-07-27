@@ -44,7 +44,7 @@ void loop() {
   // add rotations if turbo-button pressed
   if (turboButtonW0.fell()) {
     Serial.println("TurboButtonW0 triggered");
-    led.blink(3);
+    led.addBlinks(3);
     if(winder0.isRunning()){
       winder0.stop();
     }else{
@@ -54,7 +54,7 @@ void loop() {
 
   if (turboButtonW1.fell()) {
     Serial.println("TurboButtonW1 triggered");
-    led.blink(3);
+    led.addBlinks(3);
     if(winder1.isRunning()){
       winder1.stop();
     }else{
@@ -86,7 +86,7 @@ void loop() {
         winder1.addRotations(ROTATIONS_PER_INTERVAL);
       }
 
-      led.blink(3);    
+      led.addBlinks(3);
 
     }else{
 
