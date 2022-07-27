@@ -1,4 +1,4 @@
-#ifndef CONFIG_h
+#if !defined(CONFIG_h)
 #define CONFIG_h
 
 #include <Arduino.h>

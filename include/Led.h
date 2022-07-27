@@ -1,4 +1,4 @@
-#ifndef LED_h
+#if !defined(LED_h)
 #define LED_h
 
 #include <Arduino.h>

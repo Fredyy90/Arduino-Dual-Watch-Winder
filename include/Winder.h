@@ -1,4 +1,4 @@
-#ifndef WINDER_h
+#if !defined(WINDER_h)
 #define WINDER_h
 
 #include <Arduino.h>
