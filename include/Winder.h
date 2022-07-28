@@ -16,10 +16,10 @@ class Winder
     void addRotations(u_int8_t count);
     void addRotations(u_int8_t count, u_int8_t direction);
 
-    const u_int8_t FORWARD = 1;
-    const u_int8_t BACKWARD = 2;
-    const u_int8_t RANDOM = 3;
-    const u_int8_t RANDOM_SPLIT = 4;
+    static const u_int8_t FORWARD = 1;
+    static const u_int8_t BACKWARD = 2;
+    static const u_int8_t RANDOM = 3;
+    static const u_int8_t RANDOM_SPLIT = 4;
 
   private:
     void _setStepperParameters();

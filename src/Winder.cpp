@@ -42,7 +42,11 @@ bool Winder::stop(){
 
     if(this->isRunning()){
         long distance = this->_stepper.distanceToGo();
-        this->_stepper.move(distance % this->_stepsPerRotation);  // only finish current rotation
+        if(distance > 0){
+            this->_stepper.move(distance % this->_stepsPerRotation);
+        }else{
+            this->_stepper.move(-this->_stepsPerRotation + (distance  % this->_stepsPerRotation));
+        }
         this->_CCWRotations = 0;
         this->_CWRotations = 0;
         return true;
