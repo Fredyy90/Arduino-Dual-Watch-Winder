@@ -20,17 +20,23 @@ void Winder::_setStepperParameters(){
 void Winder::update(){
     this->_stepper.run();
 
-    if(!this->isRunning()){
-        if(this->_CWRotations == 0 && this->_CCWRotations == 0){
+    if(this->isRunning()){
+        this->_lastStepTime = millis();
+        return;
+    }
+
+    // stepper is not running
+    if(this->_CWRotations == 0 && this->_CCWRotations == 0){
+        if(this->_lastStepTime + this->_stepperTimeout >= millis()){
             this->_stepper.disableOutputs();
             this->_stepper.setCurrentPosition(0);
-        }else if(this->_CWRotations > 0){
-            this->_stepper.move(this->_stepsPerRotation * this->_CWRotations);  
-            this->_CWRotations = 0;
-        }else if(this->_CCWRotations > 0){
-            this->_stepper.move(-this->_stepsPerRotation * this->_CCWRotations);  
-            this->_CCWRotations = 0;
         }
+    }else if(this->_CWRotations > 0){
+        this->_stepper.move(this->_stepsPerRotation * this->_CWRotations);  
+        this->_CWRotations = 0;
+    }else if(this->_CCWRotations > 0){
+        this->_stepper.move(-this->_stepsPerRotation * this->_CCWRotations);  
+        this->_CCWRotations = 0;
     }
 }
 
@@ -40,18 +46,22 @@ bool Winder::isRunning(){
 
 bool Winder::stop(){
 
-    if(this->isRunning()){
-        long distance = this->_stepper.distanceToGo();
-        if(distance > 0){
-            this->_stepper.move(distance % this->_stepsPerRotation);
-        }else{
-            this->_stepper.move(-this->_stepsPerRotation + (distance  % this->_stepsPerRotation));
-        }
-        this->_CCWRotations = 0;
-        this->_CWRotations = 0;
-        return true;
+    if(!this->isRunning()){
+        return false;
     }
-    return false;
+
+    // stepper is running
+    long distance = this->_stepper.distanceToGo();
+    if(distance > 0){
+        this->_stepper.move(distance % this->_stepsPerRotation);
+    }else{
+        this->_stepper.move(-this->_stepsPerRotation + (distance  % this->_stepsPerRotation));
+    }
+
+    this->_CCWRotations = 0;
+    this->_CWRotations = 0;
+
+    return true;
 
 }
 
