@@ -3,10 +3,10 @@
 
 #include <Arduino.h>
 
-//#define HAS_TURBO_BUTTONS 1      // add support for turbo buttons, connected to pins PIN_TURBO_BUTTON_W0 and PIN_TURBO_BUTTON_W1
-//#define HAS_SOFT_POWER_SWITCH 1  // add support for "soft" power switch, connected to pin PIN_POWER_SWITCH and not directly to the power supply
-//#define HAS_LED 1                // uncomment if you connect a LED to pin PIN_POWER_SWITCH_LED e.g. the LED in the power switch
-//#define PERFORMANCE_OUTPUT 1     // add additional debug output about the loop performance every 25k runs
+#define HAS_TURBO_BUTTONS 1      // add support for turbo buttons, connected to pins PIN_TURBO_BUTTON_W0 and PIN_TURBO_BUTTON_W1
+#define HAS_SOFT_POWER_SWITCH 1  // add support for "soft" power switch, connected to pin PIN_POWER_SWITCH and not directly to the power supply
+#define HAS_LED 1                // uncomment if you connect a LED to pin PIN_POWER_SWITCH_LED e.g. the LED in the power switch
+#define PERFORMANCE_OUTPUT 1     // add additional debug output about the loop performance every 25k runs
 
 // define pins used for first winder
 const int PIN_W0_A1 = 2;
@@ -56,7 +56,7 @@ const int ROTATIONS_PER_INTERVAL = 3;               // add 3 rotations every int
 const int TIME_INTERVAL          = 5*60;            // interval to add rotations in seconds, default value : 5*60 = 5 minutes
 const int TURBO_BUTTON_ROTATIONS = 200;             // add 200 rotations everytime turbobutton is pressed
 
-const u_int32_t STEPPER_STEPS_PER_ROTATION = 2048;  // steps needed for 1 rotation
+const u_int32_t STEPPER_STEPS_PER_ROTATION = 2038;  // steps needed for 1 rotation (https://lastminuteengineers.com/28byj48-stepper-motor-arduino-tutorial/)
 const u_int32_t STEPPER_MAX_STEPS_PER_SEC  = 600;   // max speed in steps per second
 const u_int32_t STEPPER_ACCELERATION       = 2048;  // in steps*second²
 
