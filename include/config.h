@@ -52,8 +52,8 @@ const int PIN_MODE_SWITCH_W1  = 13;
  * 
  */
 
-const int ROTATIONS_PER_INTERVAL = 3;               // add 3 rotations every interval
-const int TIME_INTERVAL          = 5*60;            // interval to add rotations in seconds, default value : 5*60 = 5 minutes
+const int ROTATIONS_PER_INTERVAL = 4;               // add 3 rotations every interval
+const int TIME_INTERVAL          = 6*60;            // interval to add rotations in seconds, default value : 5*60 = 5 minutes
 const int TURBO_BUTTON_ROTATIONS = 200;             // add 200 rotations everytime turbobutton is pressed
 
 const u_int32_t STEPPER_STEPS_PER_ROTATION = 2038;  // steps needed for 1 rotation (https://lastminuteengineers.com/28byj48-stepper-motor-arduino-tutorial/)

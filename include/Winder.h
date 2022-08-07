@@ -20,6 +20,7 @@ class Winder
     static const u_int8_t BACKWARD = 2;
     static const u_int8_t RANDOM = 3;
     static const u_int8_t RANDOM_SPLIT = 4;
+    static const u_int8_t SPLIT = 5;
 
   private:
     void _setStepperParameters();
