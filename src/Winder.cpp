@@ -84,13 +84,13 @@ void Winder::addRotations(const u_int8_t count, const u_int8_t direction){
         }
     }else if (direction == Winder::RANDOM_SPLIT){
         float factor = ((float)random(256) / (float)256);
-        const int CWSteps = count * factor;
-        this->_CWRotations += CWSteps;
-        this->_CCWRotations += count - CWSteps;
+        const int CWRotations = count * factor;
+        this->_CWRotations += CWRotations;
+        this->_CCWRotations += count - CWRotations;
     }else if (direction == Winder::SPLIT){
-        const int CWSteps = count * 0.5;
-        this->_CWRotations += CWSteps;
-        this->_CCWRotations += count - CWSteps;
+        const int CWRotations = count / 2;
+        this->_CWRotations += CWRotations;
+        this->_CCWRotations += count - CWRotations;
     }
 
 }
