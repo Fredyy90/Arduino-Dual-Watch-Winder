@@ -21,8 +21,15 @@ Throttle modeSwitchW1(PIN_MODE_SWITCH_W1, INPUT_PULLUP);
 Throttle powerSwitch(PIN_POWER_SWITCH, INPUT_PULLUP);
 #endif
 
+#if defined(DRIVER_ULN2003)
 Winder winder0(PIN_W0_A1, PIN_W0_A2, PIN_W0_B1, PIN_W0_B2);
 Winder winder1(PIN_W1_A1, PIN_W1_A2, PIN_W1_B1, PIN_W1_B2);
+#endif
+
+#if defined(DRIVER_TMC220x)
+Winder winder0(PIN_W0_STP, PIN_W0_DIR);
+Winder winder1(PIN_W1_STP, PIN_W1_DIR);
+#endif
 
 uint32_t last_run = now();
 uint32_t last_run_report = 0;

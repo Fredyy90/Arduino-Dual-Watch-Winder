@@ -65,11 +65,11 @@ bool Winder::stop(){
 
 }
 
-void Winder::addRotations(const u_int8_t count){
+void Winder::addRotations(const uint8_t count){
     this->addRotations(count, Winder::SPLIT);
 }
 
-void Winder::addRotations(const u_int8_t count, const u_int8_t direction){
+void Winder::addRotations(const uint8_t count, const uint8_t direction){
 
     if(direction == Winder::FORWARD){
         this->_CWRotations += count;
