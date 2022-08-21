@@ -14,8 +14,10 @@ Throttle turboButtonW0(PIN_TURBO_BUTTON_W0, INPUT_PULLUP);
 Throttle turboButtonW1(PIN_TURBO_BUTTON_W1, INPUT_PULLUP);
 #endif
 
+#if defined(HAS_MODE_SWITCH)
 Throttle modeSwitchW0(PIN_MODE_SWITCH_W0, INPUT_PULLUP);
 Throttle modeSwitchW1(PIN_MODE_SWITCH_W1, INPUT_PULLUP);
+#endif
 
 #if defined(HAS_SOFT_POWER_SWITCH)
 Throttle powerSwitch(PIN_POWER_SWITCH, INPUT_PULLUP);
@@ -100,19 +102,25 @@ void loop() {
 
         last_run = now();
 
-        bool modeW0State = modeSwitchW0.read();
-        bool modeW1State = modeSwitchW1.read();
-        if(modeW0State == true && modeW1State == true){
+        #if defined(HAS_MODE_SWITCH)
+            bool modeW0State = modeSwitchW0.read();
+            bool modeW1State = modeSwitchW1.read();
+            if(modeW0State == true && modeW1State == true){
+                Serial.println("Added rotations to both winders");
+                winder0.addRotations(ROTATIONS_PER_INTERVAL);
+                winder1.addRotations(ROTATIONS_PER_INTERVAL);
+            }else if (modeW0State == false){
+                Serial.println("Added rotations to winder0");
+                winder0.addRotations(ROTATIONS_PER_INTERVAL);
+            }else if (modeW1State == false){
+                Serial.println("Added rotations to winder1");
+                winder1.addRotations(ROTATIONS_PER_INTERVAL);
+            }
+        #else
             Serial.println("Added rotations to both winders");
             winder0.addRotations(ROTATIONS_PER_INTERVAL);
             winder1.addRotations(ROTATIONS_PER_INTERVAL);
-        }else if (modeW0State == false){
-            Serial.println("Added rotations to winder0");
-            winder0.addRotations(ROTATIONS_PER_INTERVAL);
-        }else if (modeW1State == false){
-            Serial.println("Added rotations to winder1");
-            winder1.addRotations(ROTATIONS_PER_INTERVAL);
-        }
+        #endif
 
         #if defined(HAS_LED)
             led.addBlinks(3);
@@ -121,7 +129,7 @@ void loop() {
     }else{
 
         if(time_offset % 10 == 0 && last_run_report != time_offset){
-            char buffer[102];
+            char buffer[150];
             sprintf(buffer, "Time Offset = %ds, Waiting for TIME_INTERVAL = %ds to add ROTATIONS_PER_INTERVAL = %d new rotations.", time_offset, TIME_INTERVAL, ROTATIONS_PER_INTERVAL);
             Serial.println(buffer);
             last_run_report = time_offset;
@@ -137,7 +145,7 @@ void loop() {
             double avg = (double)elapsedTime / (double)outputSteps;
             double freq = (1000.0/ (double)elapsedTime) * (double)outputSteps;
 
-            char buffer[100];
+            char buffer[150];
             sprintf(buffer, "Performance Output: %ld loop runs, elapsed %ld ms total, average %s ms per loop, loop-freq: %shz", outputSteps, elapsedTime, String(avg, 5).c_str(), String(freq, 2).c_str());
             Serial.println(buffer);
 
@@ -154,9 +162,11 @@ void updateEverything(){
         led.update();
     #endif
 
-    // update Buttons/Switch
-    modeSwitchW0.update();
-    modeSwitchW1.update();
+    #if defined(HAS_MODE_SWITCH)
+        // update Buttons/Switch
+        modeSwitchW0.update();
+        modeSwitchW1.update();
+    #endif
 
     #if defined(HAS_SOFT_POWER_SWITCH)
         powerSwitch.update();
@@ -172,4 +182,5 @@ void updateEverything(){
     // update winders
     winder0.update();
     winder1.update();
+
 }
