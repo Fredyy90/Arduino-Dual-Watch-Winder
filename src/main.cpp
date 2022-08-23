@@ -6,40 +6,46 @@
 #include <Winder.h>
 
 #if defined(HAS_LED)
-Led led(PIN_POWER_SWITCH_LED);
+    Led led(PIN_POWER_SWITCH_LED);
 #endif
 
 #if defined(HAS_TURBO_BUTTONS)
-Throttle turboButtonW0(PIN_TURBO_BUTTON_W0, INPUT_PULLUP);
-Throttle turboButtonW1(PIN_TURBO_BUTTON_W1, INPUT_PULLUP);
+    Throttle turboButtonW0(PIN_TURBO_BUTTON_W0, INPUT_PULLUP);
+    #if NUMBER_OF_WINDERS > 1
+        Throttle turboButtonW1(PIN_TURBO_BUTTON_W1, INPUT_PULLUP);
+    #endif
 #endif
 
 #if defined(HAS_MODE_SWITCH)
-Throttle modeSwitchW0(PIN_MODE_SWITCH_W0, INPUT_PULLUP);
-Throttle modeSwitchW1(PIN_MODE_SWITCH_W1, INPUT_PULLUP);
+    Throttle modeSwitchW0(PIN_MODE_SWITCH_W0, INPUT_PULLUP);
+    Throttle modeSwitchW1(PIN_MODE_SWITCH_W1, INPUT_PULLUP);
 #endif
 
 #if defined(HAS_SOFT_POWER_SWITCH)
-Throttle powerSwitch(PIN_POWER_SWITCH, INPUT_PULLUP);
+    Throttle powerSwitch(PIN_POWER_SWITCH, INPUT_PULLUP);
 #endif
 
 #if defined(DRIVER_ULN2003)
-Winder winder0(PIN_W0_A1, PIN_W0_A2, PIN_W0_B1, PIN_W0_B2);
-Winder winder1(PIN_W1_A1, PIN_W1_A2, PIN_W1_B1, PIN_W1_B2);
+    Winder winder0(PIN_W0_A1, PIN_W0_A2, PIN_W0_B1, PIN_W0_B2);
+    #if NUMBER_OF_WINDERS > 1
+        Winder winder1(PIN_W1_A1, PIN_W1_A2, PIN_W1_B1, PIN_W1_B2);
+    #endif
 #endif
 
 #if defined(DRIVER_TMC220x)
-Winder winder0(PIN_W0_STP, PIN_W0_DIR);
-Winder winder1(PIN_W1_STP, PIN_W1_DIR);
+    Winder winder0(PIN_W0_STP, PIN_W0_DIR);
+    #if NUMBER_OF_WINDERS > 1
+        Winder winder1(PIN_W1_STP, PIN_W1_DIR);
+    #endif
 #endif
 
 uint32_t last_run = now();
 uint32_t last_run_report = 0;
 
 #if defined(PERFORMANCE_OUTPUT)
-uint32_t startTime  = millis();
-uint32_t runCounter = 0;
-const uint32_t outputSteps = 25000;
+    uint32_t startTime  = millis();
+    uint32_t runCounter = 0;
+    const uint32_t outputSteps = 25000;
 #endif
 
 void updateEverything();
@@ -47,6 +53,10 @@ void updateEverything();
 // put your setup code here, to run once:
 void setup() {
     Serial.begin(111520);
+
+    #if defined(PIN_STEPPER_ENABLE)
+        pinMode(PIN_STEPPER_ENABLE, OUTPUT);
+    #endif
 }
 
 // put your main code here, to run repeatedly:
@@ -69,17 +79,19 @@ void loop() {
             }
         }
 
-        if (turboButtonW1.fell()) {
-            Serial.println("TurboButtonW1 triggered");
-            #if defined(HAS_LED)
-                led.addBlinks(3);
-            #endif
-            if(winder1.isRunning()){
-                winder1.stop();
-            }else{
-                winder1.addRotations(TURBO_BUTTON_ROTATIONS);
+        #if NUMBER_OF_WINDERS > 1
+            if (turboButtonW1.fell()) {
+                Serial.println("TurboButtonW1 triggered");
+                #if defined(HAS_LED)
+                    led.addBlinks(3);
+                #endif
+                if(winder1.isRunning()){
+                    winder1.stop();
+                }else{
+                    winder1.addRotations(TURBO_BUTTON_ROTATIONS);
+                }
             }
-        }
+        #endif
     #endif
 
     #if defined(HAS_SOFT_POWER_SWITCH)
@@ -102,11 +114,11 @@ void loop() {
 
         last_run = now();
 
-        #if defined(HAS_MODE_SWITCH)
+        #if defined(HAS_MODE_SWITCH) && NUMBER_OF_WINDERS > 1
             bool modeW0State = modeSwitchW0.read();
             bool modeW1State = modeSwitchW1.read();
             if(modeW0State == true && modeW1State == true){
-                Serial.println("Added rotations to both winders");
+                Serial.println("Added rotations to all winders");
                 winder0.addRotations(ROTATIONS_PER_INTERVAL);
                 winder1.addRotations(ROTATIONS_PER_INTERVAL);
             }else if (modeW0State == false){
@@ -117,9 +129,11 @@ void loop() {
                 winder1.addRotations(ROTATIONS_PER_INTERVAL);
             }
         #else
-            Serial.println("Added rotations to both winders");
+            Serial.println("Added rotations to all winders");
             winder0.addRotations(ROTATIONS_PER_INTERVAL);
-            winder1.addRotations(ROTATIONS_PER_INTERVAL);
+            #if NUMBER_OF_WINDERS > 1
+                winder1.addRotations(ROTATIONS_PER_INTERVAL);
+            #endif
         #endif
 
         #if defined(HAS_LED)
@@ -174,13 +188,27 @@ void updateEverything(){
 
     #if defined(HAS_TURBO_BUTTONS)
         turboButtonW0.update();
-        turboButtonW1.update();
+        #if NUMBER_OF_WINDERS > 1
+            turboButtonW1.update();
+        #endif
     #endif
 
-
+    #if defined(PIN_STEPPER_ENABLE)
+        if(winder0.isRunning() 
+            #if NUMBER_OF_WINDERS > 1
+                || winder1.isRunning()
+            #endif
+        ){
+            digitalWrite(PIN_STEPPER_ENABLE, LOW);
+        }else{
+            digitalWrite(PIN_STEPPER_ENABLE, HIGH);
+        }
+    #endif
 
     // update winders
     winder0.update();
-    winder1.update();
+    #if NUMBER_OF_WINDERS > 1
+        winder1.update();
+    #endif
 
 }

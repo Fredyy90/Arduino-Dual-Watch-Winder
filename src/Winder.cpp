@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Winder.h>
+#include <AccelStepper.h>
 
 
 Winder::Winder(uint8_t step_pin, uint8_t direction_pin){
